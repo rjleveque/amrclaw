@@ -227,8 +227,8 @@ c -------------------------------------------------------------
 c
        subroutine prepgrids(listgrids, num, level)
 
+       use amr_module
        implicit double precision (a-h,o-z)
-       include "call.i"
        integer listgrids(num)
 
        mptr = lstart(level)
