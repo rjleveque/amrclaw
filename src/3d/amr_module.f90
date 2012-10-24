@@ -4,7 +4,7 @@ implicit none
 save
 
 !  :::::::   number of spatial dimensions
-       parameter(numdim = 3)
+       integer, parameter :: numdim  = 3
 
 !      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 !      :::::   data structure info.
@@ -96,8 +96,6 @@ save
 
        integer ngrids
 
-       logical    printout, matlabout, ncarout
-
  
 !
 !      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -140,7 +138,7 @@ save
 !      :::::  collect stats
 !      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 !
-       real(kind=8) rvoll(10),evol,rvol,avenumgrids(maxlv),
+       real(kind=8) rvoll(10),evol,rvol,avenumgrids(maxlv)
        integer lentot,lenmax,lendim, iregridcount(maxlv)
 
 
