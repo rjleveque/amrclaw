@@ -3,9 +3,8 @@ c  -----------------------------------------------------------
 c
       subroutine gfixup(lbase, lfnew, nvar, naux)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
 c
 c ::::::::::::::::::::::::: GFIXUP ::::::::::::::::::::::::::::::::;
@@ -17,7 +16,7 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
 c
 c   reclaim old storage (store2 position) and list space ffluxptr and
 c   cfluxptr before allocating new storage. remember, finest level grids
-c  (if level = mxnest so that error never estimated) don't have
+c  (if level = mxnest so that error never estimated) dont have
 c  2 copies of solution values at old and new times.
 c
 c

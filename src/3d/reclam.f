@@ -12,9 +12,8 @@ c  everything on the list.
 c
 c ::::::::::::::::::::::::::::::::::;:::::::::::::::::::::::::
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
 !$OMP CRITICAL (MemMgmt)
 

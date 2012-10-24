@@ -3,10 +3,10 @@ c  ----------------------------------------------------------
 c
       subroutine domain (nvar,vtime,nx,ny,nz,naux,t0)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-      logical    vtime
 
-      include  "call.i"
+      logical    vtime
 c
 c  allocate initial coarse grid domain. set node info & initialize grid
 c  initial space and time step set here too

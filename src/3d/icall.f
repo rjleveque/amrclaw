@@ -5,12 +5,11 @@ c
      .                  ilo,ihi,jlo,jhi,klo,khi,level,
      .                  iputst,jputst,kputst)
 
-       implicit double precision (a-h, o-z)
+      use amr_module
+      implicit double precision (a-h, o-z)
 
-       dimension val(nrow,ncol,nfil,nvar)
-       dimension aux(nrow,ncol,nfil,naux)
-
-       include "call.i"
+      dimension val(nrow,ncol,nfil,nvar)
+      dimension aux(nrow,ncol,nfil,naux)
 
 c2D    iadd   (i,j,ivar) = loc    + i - 1 + mitot*((ivar-1)*mjtot+j-1)
 c2D    iaddaux(i,j,ivar) = locaux + i - 1 + mitot*((ivar-1)*mjtot+j-1)

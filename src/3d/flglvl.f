@@ -4,9 +4,9 @@ c
       subroutine flglvl(nvar,naux,lcheck,nxypts,index,lbase,
      1                  i1flags,npts,t0,isize,jsize,ksize)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
 
-      include  "call.i"
       integer*1 i1flags(isize+2,jsize+2,ksize+2)
       integer*1 dom1flags(isize+2,jsize+2,ksize+2)
 c

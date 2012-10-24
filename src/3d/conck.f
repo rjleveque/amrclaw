@@ -3,10 +3,10 @@ c -----------------------------------------------------------
 c
       subroutine conck(level, nvar, time, rest)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-      logical  rest
 
-      include  "call.i"
+      logical  rest
 
       iadd(i,j,k,ivar)   = loc    +    (i-1)
      &                            +    (j-1)*mitot

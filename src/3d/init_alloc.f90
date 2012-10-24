@@ -14,8 +14,8 @@
       subroutine init_alloc()
     
       use mem_storage
+      use amr_module
       implicit double precision (a-h,o-z)
-      include "call.i"
 
        if (.not.allocated(storage)) then
           memsize = 1000000

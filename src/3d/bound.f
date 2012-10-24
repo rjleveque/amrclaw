@@ -5,9 +5,8 @@ c
      1                 aux,naux)
 
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
       dimension valbig(mitot,mjtot,mktot,nvar)
       dimension aux   (mitot,mjtot,mktot,naux)

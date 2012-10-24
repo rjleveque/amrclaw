@@ -3,9 +3,8 @@ c --------------------------------------------------------------
 c
       subroutine advanc (level,nvar,dtlevnew,vtime,naux)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
       logical    vtime
       integer omp_get_thread_num, omp_get_max_threads
