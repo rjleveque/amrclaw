@@ -19,6 +19,10 @@ c
 
       dimension iscr(idim), jscr(jdim), kscr(kdim)
       dimension locval(4,numdim)
+    
+      iplane = 1
+      jplane = 2
+      kplane = 3
 
 c
 c  look for holes first in horizontal then vertical then transverse direction
