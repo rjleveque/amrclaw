@@ -5,11 +5,10 @@ c
      &                    ilo,ihi,jlo,jhi,klo,khi,level,
      &                    iputst,jputst,kputst)
 
-       implicit double precision (a-h, o-z)
+      use amr_module
+      implicit double precision (a-h, o-z)
 
-       dimension val(mitot,mjtot,mktot,nvar)
-
-       include "call.i"
+      dimension val(mitot,mjtot,mktot,nvar)
 
        iadd(i,j,k,ivar)   = loc    +    (i-1)
      &                             +    (j-1)*mi

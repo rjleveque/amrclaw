@@ -4,10 +4,10 @@ c
        subroutine upbnd(listbc,val,nvar,mitot,mjtot,mktot,
      1                  maxsp,mptr)
 
+      use amr_module
       implicit double precision (a-h,o-z)
 
       parameter(numbcs=6)
-      include  "call.i"
 
        dimension val(mitot,mjtot,mktot,nvar),listbc(numbcs,maxsp),
      1           iused(mitot,mjtot,mktot)

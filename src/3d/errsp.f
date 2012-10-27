@@ -15,9 +15,8 @@ c sperr  = user computed fn. (density gradient here)
 c           (if sperr(i,j,k) > tolsp cell will be flagged)
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c
+      use amr_module
       implicit double precision (a-h, o-z)
-
-c      include  "call.i"
 
       dimension   rect(mitot,mjtot,mktot,nvar)
       dimension  sperr(mitot,mjtot,mktot)

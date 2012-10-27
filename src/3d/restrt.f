@@ -3,10 +3,10 @@ c ---------------------------------------------------------
 c
       subroutine restrt(nsteps,time,nvar)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-      logical   ee
 
-      include  "call.i"
+      logical   ee
 
       character*12 rstfile
       logical foundFile
@@ -17,7 +17,7 @@ c read back in the check point files written by subr. check.
 c
 c some input variables might have changed, and also the
 c alloc array could have been written with a smaller size at checkpoint
-c Error check that ref. ratios haven't changed, only been added to.
+c Error check that ref. ratios havent changed, only been added to.
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c
       rstfile  = 'restart.data'

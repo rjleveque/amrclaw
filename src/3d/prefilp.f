@@ -7,9 +7,8 @@ c
      3                                 nrowst,ncolst,nfilst
      4                                 ilo,ihi,jlo,jhi,klo,khi)
 
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
       dimension valbig(mitot,mjtot,mktot,nvar)
       dimension    aux(mitot,mjtot,mktot,naux)

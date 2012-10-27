@@ -17,9 +17,8 @@
 
        subroutine resize_storage(new_size,status)
     
-       implicit double precision (a-h,o-z)
-      include "call.i"
-
+      use amr_module
+      implicit double precision (a-h,o-z)
     
 !!$    integer, intent(out) :: status
 !!$    integer, intent(in) :: new_size

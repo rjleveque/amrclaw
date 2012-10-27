@@ -24,9 +24,8 @@ c  Adapted from 2D recursive routine, 10/22/2012.
 c
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
       logical   set, sticksout
       dimension valbig(mitot,mjtot,mktot,nvar)

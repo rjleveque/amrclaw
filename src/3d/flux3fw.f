@@ -23,7 +23,7 @@ c     # A modified Riemann solver rp3n must be used in conjunction with this
 c     # routine, which returns fwave's instead of wave's.
 c     # See http://amath.washington.edu/~claw/fwave.html
 c
-c     # Limiters are applied to the fwave's, and the only significant
+c     # Limiters are applied to the fwaves, and the only significant
 c     # modification of this code is in the "do 119" loop, for the
 c     # second order corrections.
 c
@@ -128,10 +128,10 @@ c            cmbsasdq = C^- B^* A^* Dq
 c            cpbsasdq = C^+ B^* A^* Dq
 c
 c
+      use amr_module
       implicit double precision(a-h,o-z)
-      external rpn3,rpt3, rptt3
 
-      include "call.i"
+      external rpn3,rpt3, rptt3
 
       dimension     q1d(1-mbc:maxm+mbc, meqn)
       dimension    amdq(1-mbc:maxm+mbc, meqn)

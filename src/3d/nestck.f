@@ -5,9 +5,8 @@ c
      1                        nclust,domflags,isize,jsize,ksize,
      &                        nvar,naux)
 c
+      use amr_module
       implicit double precision (a-h,o-z)
-
-      include  "call.i"
 
       dimension  badpts(numdim,npts)
       integer*1  domflags(0:isize+1,0:jsize+1,0:ksize+1)
