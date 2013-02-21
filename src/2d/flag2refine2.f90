@@ -64,7 +64,7 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
     external allowflag
 
     ! Locals
-    integer :: i,j,m
+    integer :: i,j,m,mm
     real(kind=8) :: x_c,y_c,x_low,y_low,x_hi,y_hi
     real(kind=8) :: dqi(meqn), dqj(meqn), dq(meqn)
 
@@ -89,8 +89,7 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
                     t >= regions(m)%t_low .and. t <= regions(m)%t_hi) then
                     if (x_hi > regions(m)%x_low .and. x_low < regions(m)%x_hi .and. &
                         y_hi > regions(m)%y_low .and. y_low < regions(m)%y_hi ) then
-                    
-                        amrflags(i,j) = DOFLAG
+                           amrflags(i,j) = DOFLAG
                         cycle x_loop
                     endif
                 endif
@@ -99,19 +98,26 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
             ! -----------------------------------------------------------------
             ! Refinement not forced, so check if it is allowed and if so,
             ! check if there is a reason to flag this point:
-            if (allowflag(x_c,y_c,t,level)) then
-                dq = 0.d0
-                dqi = abs(q(:,i+1,j) - q(:,i-1,j))
-                dqj = abs(q(:,i,j+1) - q(:,i,j-1))
-                dq = max(dq,dqi,dqj)
+            do m=1,num_regions
+              if  ((level < regions(m)%max_level) .and. &
+                 (x_c > regions(m)%x_low .and. x_c <  regions(m)%x_hi.and. &
+                  y_c > regions(m)%y_low .and. y_c <  regions(m)%y_hi.and. &
+                  t > regions(m)%t_low .and. t <= regions(m)%t_hi)) then
+                if (allowflag(x_c,y_c,t,level)) then
+                    dq = 0.d0
+                    dqi = abs(q(:,i+1,j) - q(:,i-1,j))
+                    dqj = abs(q(:,i,j+1) - q(:,i,j-1))
+                    dq = max(dq,dqi,dqj)
 
-                do m=1,meqn
-                    if (dq(m) > tolsp) then
-                        amrflags(i,j) = DOFLAG
-                        cycle x_loop
-                    endif
-                enddo
+                    do mm=1,meqn
+                        if (dq(mm) > tolsp) then
+                            amrflags(i,j) = DOFLAG
+                            cycle x_loop
+                        endif
+                    enddo
+                endif
             endif
+          enddo
 
         enddo x_loop
     enddo y_loop
