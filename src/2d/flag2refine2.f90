@@ -10,6 +10,10 @@
 ! This routine can be copied to an application directory and modified to
 ! implement some other desired refinement criterion.
 !
+! Regions are implemented to determine space-time regions where refinement
+! to various levels are forced / allowed.  In addition to regions, allowflag
+! is also still used...
+!
 ! The logical function allowflag(x,y,t,level) is called to check whether 
 ! further refinement at this level is allowed at this particular location
 ! and time.  The default library version of this routine returns .true.
