@@ -292,14 +292,14 @@ def setrun(claw_pkg='amrclaw'):
     #  [minlevel,maxlevel,t1,t2,x1,x2,y1,y2]
 
     # Allow 2 levels anywhere, any time:
-    rundata.regiondata.regions.append([1, 2, 0.2, 1e9, 0.0, 1.0, 0.0, 1.0])
+    #rundata.regiondata.regions.append([1, 2, 0.2, 1e9, 0.0, 1.0, 0.0, 1.0])
 
     # Allow 3 regions in lower half of domain up to t=0.7:
-    rundata.regiondata.regions.append([1, 3, 0.0, 0.7, 0.0, 1.0, 0.0, 0.5])
+    #rundata.regiondata.regions.append([1, 3, 0.0, 0.7, 0.0, 1.0, 0.0, 0.5])
 
     # Force 3 regions some places:
-    rundata.regiondata.regions.append([3, 3, 0.0, 0.3, 0.8, 1.0, 0.0, 0.3])
-    rundata.regiondata.regions.append([3, 3, 0.9, 1.5, 0.2, 0.7, 0.0, 0.3])
+    #rundata.regiondata.regions.append([3, 3, 0.0, 0.3, 0.8, 1.0, 0.0, 0.3])
+    #rundata.regiondata.regions.append([3, 3, 0.9, 1.5, 0.2, 0.7, 0.0, 0.3])
 
 
     # --------------
