@@ -27,7 +27,7 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       external rpn3,rpt3, rptt3
 
       include  "call.i"
-      common/comxyzt/dtcom,dxcom,dycom,dzcom,tcom,icom,jcom,kcom
+c#### common/comxyzt/dtcom,dxcom,dycom,dzcom,tcom,icom,jcom,kcom
 
       parameter (msize=max1d+4)
 
@@ -42,7 +42,7 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       dimension work(mwork)
 
       logical    debug,  dump
-      data       debug/.true./,  dump/.true./
+      data       debug/.false./,  dump/.false./
 c
 c     # set tcom = time.  This is in the common block comxyt that could
 c     # be included in the Riemann solver, for example, if t is explicitly
