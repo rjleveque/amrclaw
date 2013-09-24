@@ -65,7 +65,7 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.upper[1] = 1.          # yupper
     
     # Number of grid cells:
-    clawdata.num_cells[0] = 100       # mx
+    clawdata.num_cells[0] = 20       # mx
     clawdata.num_cells[1] = 1      # my
     
 
@@ -113,8 +113,8 @@ def setrun(claw_pkg='amrclaw'):
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
         # Can specify num_output_times = 0 for no output
-        clawdata.num_output_times = 25
-        clawdata.tfinal = 2.5
+        clawdata.num_output_times = 10
+        clawdata.tfinal = 1.0
         clawdata.output_t0 = True  # output at initial (or restart) time?
         
     elif clawdata.output_style == 2:
@@ -321,9 +321,9 @@ def setrun(claw_pkg='amrclaw'):
 
     #  ----- For developers ----- 
     # Toggle debugging print statements:
-    amrdata.dprint = False      # print domain flags
-    amrdata.eprint = False      # print err est flags
-    amrdata.edebug = False      # even more err est flags
+    amrdata.dprint = True       # print domain flags
+    amrdata.eprint = True       # print err est flags
+    amrdata.edebug = True       # even more err est flags
     amrdata.gprint = False      # grid bisection/clustering
     amrdata.nprint = False      # proper nesting output
     amrdata.pprint = False      # proj. of tagged points
