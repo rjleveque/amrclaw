@@ -1,5 +1,4 @@
-Makefile
-setrun.py
+.gitignore
 *.pyc
 *.o
 *.mod
