@@ -36,9 +36,9 @@ c     use slice_module, only: icoord, xyz_slice
      &                             +    (k-1)*naux*mitot*mjtot
 
 c     # hard-wire z=zupper (from amr_module)
-      icoord = 3  ! means z slice
+      icoord = 1  ! means x slice
 c     xyz_slice = zupper - 1.d-3
-      xyz_slice = 0.6d0
+      xyz_slice = 0.0d0
       tol = 1.d-6
 
       output_aux_num = 0
@@ -83,7 +83,6 @@ c         # binary output
      &            access='stream')
           endif
 
-      intersects = .false.
       level = lst
       ngrids = 0
 c65   if (level .gt. lfine) go to 90
@@ -101,22 +100,47 @@ c65   if (level .gt. lfine) go to 90
            xlow = rnode(cornxlo,mptr)
            ylow = rnode(cornylo,mptr)
            zlow = rnode(cornzlo,mptr)
+           xup = xlow + nx*hxposs(level)
+           yup = ylow + ny*hyposs(level)
            zup = zlow + nz*hzposs(level)
            write(6,*) '+++ xyz_slice, zlow, zup: '
            write(6,*) '+++ ',xyz_slice, zlow, zup
+
+           intersects = .false.   ! initialize for this grid and check below
+
+           if ((icoord==1) .and. (xyz_slice .ge. xlow - tol) .and.
+     &             (xyz_slice .le. xup + tol)) then
+              intersects = .true.
+              write(6,*) '+++ intersects -- xlow, xup: ',xlow,xup
+              ngrids  = ngrids + 1
+              write(matunit1,1001) mptr, level, ny, nz
+ 1001         format(i5,'                 grid_number',/,
+     &               i5,'                 AMR_level',/,
+     &               i5,'                 my',/,
+     &               i5,'                 mz')
+
+              write(matunit1,1002) ylow,zlow,hyposs(level),
+     &           hzposs(level)
+ 1002        format(e18.8,'    ylow', /,
+     &              e18.8,'    zlow', /,
+     &              e18.8,'    dy', /,
+     &              e18.8,'    dz')
+           endif
+
+
            if ((icoord==3) .and. (xyz_slice .ge. zlow - tol) .and.
      &             (xyz_slice .le. zup + tol)) then
               intersects = .true.
               ngrids  = ngrids + 1
-              write(matunit1,1001) mptr, level, nx, ny
- 1001         format(i5,'                 grid_number',/,
+              write(matunit1,1301) mptr, level, nx, ny
+ 1301         format(i5,'                 grid_number',/,
      &               i5,'                 AMR_level',/,
      &               i5,'                 mx',/,
      &               i5,'                 my')
 
-              write(matunit1,1002) xlow,ylow,hxposs(level),
+             write(matunit1,1302) xlow,ylow,hxposs(level),
      &           hyposs(level)
- 1002        format(e18.8,'    xlow', /,
+ 1302        format(e18.8,'    xlow', /,
      &              e18.8,'    ylow', /,
      &              e18.8,'    dx', /,
      &              e18.8,'    dy')
@@ -126,15 +150,66 @@ c65   if (level .gt. lfine) go to 90
          write(6,*) '+++ mptr, intersects: ',mptr,intersects
 
          if ((output_format == 1) .and. intersects) then
-            if (icoord==3) then
-              do 75 k = nghost+1, mktot-nghost
+            write(matunit1,*) ' '
+            if (icoord==1) then
+              iprint = -1
+              do i = nghost+1, mitot-nghost
+                   xim = xlow + (i-nghost-1)*hxposs(level)
+                   xip = xlow + (i-nghost)*hxposs(level)
+                   alpha = -1.d0  !# indicates ignore this row
+                   if ((xyz_slice .ge. xim) .and. 
+     &                 (xyz_slice .lt. xip)) then
+                      alpha = (xyz_slice - xim)/hxposs(level)
+                    else if ((i==nghost+1) .and.
+     &                      (xyz_slice .le. xim)) then
+c                     # special case for lower edge
+                      alpha = 0.d0
+                    else if ((i==mitot-nghost) .and.
+     &                      (xyz_slice .ge. xip)) then
+c                     # special case for upper edge
+                      alpha = 1.d0
+                    endif
+                  
+c                  write(6,*) '+++ i, xim, alpha: ',i, xim, alpha
+                   if (alpha > -1.d0) then
+                      iprint = i
+                      write(6,*) '+++ OUTPUT at i = ',i
+                      do k = nghost+1, mktot-nghost
+                      do j = nghost+1, mjtot-nghost
+                      do ivar=1,nvar
+                         val(ivar) = alpha*alloc(iadd(ivar,i+1,j,k)) 
+     &                         + (1.d0-alpha)*alloc(iadd(ivar,i,j,k))
+                         if (dabs(val(ivar)) < 1d-90) val(ivar) = 0.d0
+                         enddo
+                      write(matunit1,109) (val(ivar), ivar=1,nvar)
+
+  109                 format(50e26.16)
+                      enddo ! j loop
+                      write(matunit1,*) ' '
+                      enddo ! k loop
+                   endif
+c              write(matunit1,*) ' '
+            enddo ! i loop
+            if (iprint < 0) then
+               write(6,*) '*** ERROR in valout_slice'
+               write(6,*) 'xyz_slice: ',xyz_slice
+               write(6,*) 'xlow, xup, dx: ',xlow,xup,hxposs(level)
+               stop
+               endif
+            write(matunit1,*) ' '
+         endif
+
+         else if (icoord==3) then
+              kprint = -1
+              do k = nghost+1, mktot-nghost
                    zkm = zlow + (k-nghost-1)*hzposs(level)
                    zkp = zlow + (k-nghost)*hzposs(level)
                    alpha = -1.d0  !# indicates ignore this row
                    if ((xyz_slice .ge. zkm) .and. 
      &                 (xyz_slice .lt. zkp)) then
                       alpha = (xyz_slice - zkm)/hzposs(level)
-                    else if ((k==nz) .and. (xyz_slice==zupper) .and.
+                    else if ((k==mktot-nghost) .and. 
+     &                     (xyz_slice==zupper) .and.
      &                     (zkp > zupper - 0.5d0*hzposs(level))) then
 c                     # special case for upper domain boundary
                       alpha = 1.d0
@@ -142,8 +217,9 @@ c                     # special case for upper domain boundary
                   
 c                  write(6,*) '+++ k, zkm, alpha: ',k, zkm, alpha
                    if (alpha > -1.d0) then
-                      do 76 j = nghost+1, mjtot-nghost
-                      do 77 i = nghost+1, mitot-nghost
+                      kprint = k
+                      do j = nghost+1, mjtot-nghost
+                      do i = nghost+1, mitot-nghost
                       do ivar=1,nvar
                          val(ivar) = alpha*alloc(iadd(ivar,i,j,k+1)) 
      &                         + (1.d0-alpha)*alloc(iadd(ivar,i,j,k))
@@ -151,15 +227,19 @@ c                  write(6,*) '+++ k, zkm, alpha: ',k, zkm, alpha
                          enddo
                       write(matunit1,109) (val(ivar), ivar=1,nvar)
 
-  109                 format(50e26.16)
-   77                 continue
+                      enddo ! i loop
                       write(matunit1,*) ' '
-   76                 continue
+                      enddo ! j loop
                endif
                write(matunit1,*) ' '
-   75       continue
+               enddo ! k loop
+            if (kprint < 0) then
+               write(6,*) '*** ERROR in valout_slice'
+               write(6,*) 'xyz_slice: ',xyz_slice
+               write(6,*) 'zlow, zup, dz: ',zlow,zup,hzposs(level)
+               stop
+               endif
             write(matunit1,*) ' '
-         endif
          endif
 
          if ((output_format == 3) .and. intersects) then
