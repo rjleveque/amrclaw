@@ -36,9 +36,10 @@ c     use slice_module, only: icoord, xyz_slice
      &                             +    (k-1)*naux*mitot*mjtot
 
 c     # hard-wire z=zupper (from amr_module)
-      icoord = 1  ! means x slice
-c     xyz_slice = zupper - 1.d-3
-      xyz_slice = 0.0d0
+c     icoord = 1  ! means x slice
+      icoord = 3  ! means z slice
+      xyz_slice = 1.d-3
+c     xyz_slice = 0.0d0
       tol = 1.d-6
 
       output_aux_num = 0
@@ -197,7 +198,6 @@ c              write(matunit1,*) ' '
                stop
                endif
             write(matunit1,*) ' '
-         endif
 
          else if (icoord==3) then
               kprint = -1
@@ -240,6 +240,7 @@ c                  write(6,*) '+++ k, zkm, alpha: ',k, zkm, alpha
                stop
                endif
             write(matunit1,*) ' '
+            endif
          endif
 
          if ((output_format == 3) .and. intersects) then
