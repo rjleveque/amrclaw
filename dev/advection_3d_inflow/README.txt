@@ -16,6 +16,10 @@ Only one plane can be output currently in each run.
 
 The setplot.py is set up as it would be for a 2d problem.
 
+The problem being solved is advection with inflow boundary conditions.
+At the boundary specified by inflow_side in setrun.py.
+The initial conditions are all 0 and value 1 advects in over a circular
+region centered at (0.5, 0.5), with advection velocity (u,v,w) = (1,1,1).
 
 Future work:
 
