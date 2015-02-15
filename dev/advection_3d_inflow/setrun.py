@@ -52,7 +52,7 @@ def setrun(claw_pkg='amrclaw'):
 
     probdata = rundata.new_UserData(name='probdata',fname='setprob.data')
     probdata.add_param('u',     1.0,  'ubar advection velocity')
-    probdata.add_param('v',     0.0,  'vbar advection velocity')
+    probdata.add_param('v',     1.0,  'vbar advection velocity')
     probdata.add_param('w',     1.0,  'wbar advection velocity')
 
     #------------------------------------------------------------------
