@@ -46,7 +46,7 @@ c      parameter (max1dp1 = (max1d+1)**2+1)
        dimension amdq(nvar,max1dp1),  apdq(nvar,max1dp1)
        dimension auxl(maux,max1dp1),  auxr(maux,max1dp1)
 
-       data qprint/.false./
+       data qprint/.true./
 c
 c      aux is auxiliary array with user parameters needed in Riemann solvers
 c          on fine grid corresponding to valbig
