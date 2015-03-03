@@ -114,7 +114,7 @@ def setrun(claw_pkg='amrclaw'):
     # Specify at what times the results should be written to fort.q files.
     # Note that the time integration stops after the final output time.
 
-    clawdata.output_style = 1
+    clawdata.output_style = 3
 
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
@@ -131,7 +131,7 @@ def setrun(claw_pkg='amrclaw'):
     elif clawdata.output_style == 3:
         # Output every step_interval timesteps over total_steps timesteps:
         clawdata.output_step_interval = 1
-        clawdata.total_steps = 10
+        clawdata.total_steps = 5
         clawdata.output_t0 = True  # output at initial (or restart) time?
 
 
@@ -274,7 +274,7 @@ def setrun(claw_pkg='amrclaw'):
     amrdata = rundata.amrdata
 
     # max number of refinement levels:
-    amrdata.amr_levels_max = 3
+    amrdata.amr_levels_max = 2
 
     # List of refinement ratios at each level (length at least amr_level_max-1)
     amrdata.refinement_ratios_x = [2, 2]
@@ -305,7 +305,7 @@ def setrun(claw_pkg='amrclaw'):
 
     # width of buffer zone around flagged points:
     # (typically the same as regrid_interval so waves don't escape):
-    amrdata.regrid_buffer_width  = 3
+    amrdata.regrid_buffer_width  = 8
 
     # clustering alg. cutoff for (# flagged pts) / (total # of cells refined)
     # (closer to 1.0 => more small grids may be needed to cover flagged cells)
