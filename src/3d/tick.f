@@ -286,6 +286,8 @@ c      time for output?  done with the whole thing?
 c
  110      continue
           time    = time   + possk(1)
+          rnode(timemult,:) = time   ! synchronize all grids to same time
+                                     ! to eliminate roundoff differences
           ncycle  = ncycle + 1
           call conck(1,nvar,naux,time,rest)
 
