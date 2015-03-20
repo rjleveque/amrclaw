@@ -25,7 +25,7 @@ RESTART ?= False                    # Should = clawdata.restart in setrun
 # Environment variable FC should be set to fortran compiler, e.g. gfortran
 
 # Compiler flags can be specified here or set as an environment variable
-FFLAGS ?=  
+FFLAGS ?= -fopenmp -g
 
 # ---------------------------------
 # List of sources for this program:
@@ -34,7 +34,9 @@ FFLAGS ?=
 AMRLIB = $(CLAW)/amrclaw/src/3d
 
 MODULES = \
-  $(AMRLIB)/amr_module.f90 
+  $(AMRLIB)/amr_module.f90 \
+  $(AMRLIB)/gauges_module.f90 \
+  ./slices_module.f90
 
 SOURCES = \
   qinit.f \

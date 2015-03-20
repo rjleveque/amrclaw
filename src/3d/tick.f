@@ -6,6 +6,7 @@ c
 c
       use amr_module
       use gauges_module, only: setbestsrc
+      use slices_module, only: print_slices, num_slices
 
       implicit double precision (a-h,o-z)
 
@@ -296,7 +297,11 @@ c
        endif
 
        if ((mod(ncycle,iout).eq.0) .or. dumpout) then
+          if (num_slices .gt. 0) then
+              call print_slices(1, lfine, time, nvar, naux)
+          end if
           call valout(1,lfine,time,nvar,naux)
+          
           if (printout) call outtre(mstart,.true.,nvar,naux)
        endif
 
@@ -340,7 +345,11 @@ c
           endif
       
       if (dump_final) then
+           if (num_slices .gt. 0) then
+              call print_slices(1, lfine, time, nvar, naux)
+           end if
            call valout(1,lfine,time,nvar,naux)
+           
            if (printout) call outtre(mstart,.true.,nvar,naux)
          endif
 

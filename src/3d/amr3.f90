@@ -91,6 +91,7 @@ program amr3
 
     !use regions_module, only: set_regions
     use gauges_module, only: set_gauges, num_gauges
+    use slices_module, only: set_slices, print_slices, num_slices
 
     implicit none
 
@@ -378,6 +379,7 @@ program amr3
     ! Read in region and gauge data
     !call set_regions('regions.data')
     call set_gauges('gauges.data')
+    call set_slices('slices.data')
 
 
     ! Look for capacity function via auxtypes:
@@ -578,6 +580,9 @@ program amr3
     write(outunit,*) "  original total mass ..."
     call conck(1,nvar,naux,time,rest)
     if (output_t0) then
+        if (num_slices .gt. 0) then
+            call print_slices(1,lfine,time,nvar,naux)
+        end if
         call valout(1,lfine,time,nvar,naux)
     endif
     close(parmunit)
