@@ -134,7 +134,7 @@ def setrun(claw_pkg='amrclaw'):
         # Output ntimes frames at equally spaced times up to tfinal:
         # Can specify num_output_times = 0 for no output
         clawdata.num_output_times = 1
-        clawdata.tfinal = 0.1
+        clawdata.tfinal = 0.5
         clawdata.output_t0 = True  # output at initial (or restart) time?
 
     elif clawdata.output_style == 2:
@@ -334,6 +334,14 @@ def setrun(claw_pkg='amrclaw'):
     # print info about each regridding up to this level:
     amrdata.verbosity_regrid = 0
 
+    # --------------------------
+    # Slice Data
+    # --------------------------
+
+    # Note that the output will only contain slices if any are specified
+    rundata.slicedata.slices_xy = [0.45, 0.55] # list of z positions
+    rundata.slicedata.slices_xz = [0.45, 0.55] # list of y positions
+    rundata.slicedata.slices_yz = [0.0, 0.1] # list of x positions
 
 
     #  ----- For developers -----
@@ -351,7 +359,6 @@ def setrun(claw_pkg='amrclaw'):
 
 
     return rundata
-
     # end of function setrun
     # ----------------------
 

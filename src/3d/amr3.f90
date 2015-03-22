@@ -582,8 +582,9 @@ program amr3
     if (output_t0) then
         if (num_slices .gt. 0) then
             call print_slices(1,lfine,time,nvar,naux)
+        else
+            call valout(1,lfine,time,nvar,naux)
         end if
-        call valout(1,lfine,time,nvar,naux)
     endif
     close(parmunit)
 

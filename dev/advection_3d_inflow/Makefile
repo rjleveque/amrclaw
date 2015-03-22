@@ -128,7 +128,7 @@ SOURCES = \
   $(AMRLIB)/philim.f \
   $(AMRLIB)/cstore.f \
   $(AMRLIB)/saveqc.f \
-  $(AMRLIB)/valout_slice.f \
+  $(AMRLIB)/valout.f \
   $(AMRLIB)/check.f \
   $(AMRLIB)/restrt.f \
   $(AMRLIB)/quick_sort1.f \

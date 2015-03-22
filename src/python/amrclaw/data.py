@@ -258,6 +258,82 @@ class GaugeData(clawpack.clawutil.data.ClawData):
 #  Gauge data objects
 # ==============================================================================
 
+# ==============================================================================
+#  Slice data object
+class SliceData(clawpack.clawutil.data.ClawData):
+    r""""""
+
+    def __init__(self, num_dim=3):
+        super(SliceData,self).__init__()
+
+        self.add_attribute('slices_xy',[])
+        self.add_attribute('slices_xz',[])
+        self.add_attribute('slices_yz',[])
+
+    def __str__(self):
+        output = "Slices: %s\n" % len(self.slices_xy) + len(self.slices_xz) + len(self.slices_yz)
+        for slice in self.slices_xy:
+            output = "\t".join((output,"z=%19.10e" % slice))
+        for slice in self.slices_xz:
+            output = "\t".join((output,"y=%19.10e" % slice))
+        for slice in self.slices_yz:
+            output = "\t".join((output,"x=%19.10e" % slice))
+        return output
+
+    def write(self,out_file='slices.data',data_source='setrun.py'):
+        r"""Write out slice information data file."""
+
+        # Write out slice data file
+        self.open_data_file(out_file,data_source)
+        self.data_write(name='nslices_xy',value=len(self.slices_xy))
+        self.data_write(name='nslices_xz',value=len(self.slices_xz))
+        self.data_write(name='nslices_yz',value=len(self.slices_yz))
+        for slice in self.slices_xy:
+            self.data_write(name='z',value=slice)
+        for slice in self.slices_xz:
+            self.data_write(name='y',value=slice)
+        for slice in self.slices_yz:
+            self.data_write(name='x',value=slice)
+        self.close_data_file()
+
+    def read(self,data_path="./",file_name='slices.data'):
+        r"""Read slice data file"""
+        path = os.path.join(data_path, file_name)
+        slice_file = open(path,'r')
+
+        # Read past comments and blank lines
+        header_lines = 0
+        ignore_lines = True
+        while ignore_lines:
+            line = slice_file.readline()
+            if line[0] == "#" or len(line.strip()) == 0:
+                header_lines += 1
+            else:
+                break
+
+        # Read number of slices
+        num_slices_xy = int(line.split()[0])
+        line = slice_file.readline()
+        num_slices_xz = int(line.split()[0])
+        line = slice_file.readline()
+        num_slices.yz = int(line.split()[0])
+        line = slice_file.readline()
+
+        # Read in each slice line
+        for n in xrange(num_slices_xy):
+            line = slice_file.readline().split()
+            self.slices_xy.append([float(line[0])])
+        for n in xrange(num_slices_xz):
+            line = slice_file.readline().split()
+            self.slices_xz.append([float(line[0])])
+        for n in xrange(num_slices_yz):
+            line = slice_file.readline().split()
+            self.slices_yz.append([float(line[0])])
+
+        slice_file.close()
+
+#  Slice data objects
+# ==============================================================================
 
 if __name__ == '__main__':
     raise Exception("Not unit tests have been defined for this module.")
