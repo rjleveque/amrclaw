@@ -97,8 +97,7 @@ program amr3
     ! Local variables
     integer :: i, iaux, mw, level
     integer :: ndim, nvar, naux, mcapa1, mindim
-    integer :: nstart, nsteps, nv1, nx, ny, nz, lentotsave
-    !integer :: nstart, nsteps, nv1, nx, ny, lentotsave, num_gauge_SAVE
+    integer :: nstart, nsteps, nv1, nx, ny, nz, lentotsave, num_gauge_SAVE
     integer :: omp_get_max_threads, maxthreads
     real(kind=8) :: time, ratmet, cut, dtinit, dt_max
     logical :: vtime, rest, output_t0    
