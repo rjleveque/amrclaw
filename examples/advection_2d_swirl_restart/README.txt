@@ -9,6 +9,7 @@ Create new output directory for restart and copy over checkpoint files:
     cp _output/fort*ch* _output_restart/
 
 To test restart:
+    rm .data
     make .plots -f Makefile_restart  
 
 To compare plots:
