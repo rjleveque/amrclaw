@@ -290,6 +290,21 @@ c
           ncycle  = ncycle + 1
           call conck(1,nvar,naux,time,rest)
 
+      if ( vtime) then
+c
+c         find new dt for next cycle (passed back from integration routine).
+         do 115 i = 2, lfine
+           ii = lfine+1-i
+                 dtnew(ii) = min(dtnew(ii),dtnew(ii+1)*kratio(ii))
+ 115     continue
+c          make sure not to exceed largest permissible dt
+           dtnew(1) = min(dtnew(1),dt_max)  
+           possk(1) = dtnew(1)    ! propagate new timestep to hierarchy
+         do 120 i = 2, mxnest
+ 120       possk(i) = possk(i-1) / kratio(i-1)
+
+      endif
+
        if ((checkpt_style.eq.3 .and. 
      &      mod(ncycle,checkpt_interval).eq.0) .or. dumpchk) then
           call check(ncycle,time,nvar,naux)
@@ -305,21 +320,6 @@ c
           
           if (printout) call outtre(mstart,.true.,nvar,naux)
        endif
-
-      if ( vtime) then
-c
-c         find new dt for next cycle (passed back from integration routine).
-         do 115 i = 2, lfine
-           ii = lfine+1-i
-                 dtnew(ii) = min(dtnew(ii),dtnew(ii+1)*kratio(ii))
- 115     continue
-c          make sure not to exceed largest permissible dt
-           dtnew(1) = min(dtnew(1),dt_max)  
-           possk(1) = dtnew(1)    ! propagate new timestep to hierarchy
-         do 120 i = 2, mxnest
- 120       possk(i) = possk(i-1) / kratio(i-1)
-
-      endif
 
       go to 20
 c
