@@ -11,9 +11,6 @@ module slices_module
     integer :: num_slices, num_slices_xy, num_slices_xz, num_slices_yz
     real (kind=8), allocatable, dimension(:) :: slices_xy, slices_xz, slices_yz
     
-    ! Tolerance for deciding whether point is in slice
-    real (kind=8), parameter :: slice_tol = 1.d-6
-    
     
 contains
     
@@ -153,7 +150,7 @@ contains
 
                     in_grid = .false.   ! initialize for this grid and check below
                     
-                    if ((slices_xy(l) .ge. zlow - slice_tol) .and. (slices_xy(l) .le. zup + slice_tol)) then
+                    if ((slices_xy(l) .ge. zlow - 0.01d0*hzposs(level)) .and. (slices_xy(l) .le. zup + 0.01d0*hzposs(level))) then
                         in_grid = .true.
                         ngrids(l)  = ngrids(l) + 1
                         write(matunit1+l,1301) mptr, level, nx, ny
@@ -180,10 +177,10 @@ contains
                             ! interpolate if slice is inbetween zkm and zkp
                                 alpha = (slices_xy(l) - zkm)/hzposs(level)
                             else if ((k==nghost+1) .and. (slices_xy(l) .le. zkm)) then
-    !                     # special case for lower edge
+    !                     # special case for when slice is at lower edge
                                 alpha = 0.d0
                             else if ((k==mktot-nghost) .and. (slices_xy(l) .ge. zkp)) then
-    !                     # special case for upper domain boundary
+    !                     # special case for when slice is at upper edge
                                 alpha = 1.d0
                             endif
                       
@@ -350,7 +347,7 @@ contains
 
                     in_grid = .false.   ! initialize for this grid and check below
     
-                    if ((slices_xz(l) .ge. ylow - slice_tol) .and. (slices_xz(l) .le. yup + slice_tol)) then
+                    if ((slices_xz(l) .ge. ylow - 0.01d0*hyposs(level)) .and. (slices_xz(l) .le. yup + 0.01d0*hyposs(level))) then
                     
                         in_grid = .true.
                         ngrids(l)  = ngrids(l) + 1
@@ -377,17 +374,26 @@ contains
                             if ((slices_xz(l) .ge. yjm) .and. (slices_xz(l) .lt. yjp)) then
                                 alpha = (slices_xz(l) - yjm)/hyposs(level)
                             else if ((j==nghost+1) .and. (slices_xz(l) .le. yjm)) then
-    !                     # special case for lower edge
+    !                     # special case for when slice is at lower edge
                                 alpha = 0.d0
+                                write(6,*) slices_xz(l), yjm, yjp, alpha
                             else if ((j==mjtot-nghost) .and. (slices_xz(l) .ge. yjp)) then
-    !                     # special case for upper domain boundary
+    !                     # special case for when slice is at upper edge
                                 alpha = 1.d0
+                                write(6,*) slices_xz(l), yjm, yjp, alpha 
+                                write(6,*) alloc(iadd(ivar,nghost+1,j,nghost+1)), alloc(iadd(ivar,nghost+1,j+1,nghost+1))
+                                write(6,*) ' '
                             endif
                       
                             if (alpha > -1.d0) then
                                 jprint = j
                                 do k = nghost+1, mktot-nghost
                                     do i = nghost+1, mitot-nghost
+                                        if (alpha .eq. 1.d0) then
+                                             write(6,*) slices_xz(l), yjm, yjp, alpha 
+                                             write(6,*) alloc(iadd(7,i,j,k)), alloc(iadd(7,i,j+1,k))
+                                             write(6,*) ' '
+                                        end if
                                         do ivar=1,nvar
                                             val(ivar) = alpha*alloc(iadd(ivar,i,j+1,k)) & 
                                                  + (1.d0-alpha)*alloc(iadd(ivar,i,j,k))
@@ -545,7 +551,7 @@ contains
 
                     in_grid = .false.   ! initialize for this grid and check below
     
-                    if ((slices_yz(l) .ge. xlow - slice_tol) .and. (slices_yz(l) .le. xup + slice_tol)) then
+                    if ((slices_yz(l) .ge. xlow - 0.01d0*hxposs(level)) .and. (slices_yz(l) .le. xup + 0.01d0*hxposs(level))) then
                     
                         in_grid = .true.
                         ngrids(l)  = ngrids(l) + 1
