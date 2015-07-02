@@ -135,8 +135,9 @@ c
                do 20 i = 2, mic-1
                ifine   = (i-2)*lratiox + nghost + ico
                val(ivar,ifine,jfine,kfine) = valc(ivar,i,j,k)
-     1                                   + xoff*dudx(i) + yoff*dudy(i)
-     2                                                  + zoff*dudz(i)
+c    +++ comment out slope corrections for debugging:
+c    1                                   + xoff*dudx(i) + yoff*dudy(i)
+c    2                                                  + zoff*dudz(i)
  20   continue
 c
  30   continue

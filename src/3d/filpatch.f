@@ -226,9 +226,11 @@ c$$$      zrc  =  zlower + (kphi+1)*hzc
                fw   = dmax1(0.d0,dsign(1.d0,dwpc*dwmc))
 
 
-               valint = valc + eta1*du*dsign(1.d0,ducc)*fu
-     &                       + eta2*dv*dsign(1.d0,dvcc)*fv
-     &                       + eta3*dw*dsign(1.d0,dwcc)*fw
+c              valint = valc + eta1*du*dsign(1.d0,ducc)*fu
+c    &                       + eta2*dv*dsign(1.d0,dvcc)*fv
+c    &                       + eta3*dw*dsign(1.d0,dwcc)*fw
+
+               valint = valc  !!! +++ for debugging
 
                valbig(ivar,iff+nrowst-1,jf+ncolst-1,kf+nfilst-1)
      &                = valint

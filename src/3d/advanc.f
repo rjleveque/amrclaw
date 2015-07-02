@@ -214,10 +214,10 @@ c
             locsvf = node(ffluxptr,mptr)
             locsvq = locsvf + nvar*lenbc
             locx1d = locsvq + nvar*lenbc
-            call qad(alloc(locnew),mitot,mjtot,mktot,nvar,
-     1             alloc(locsvf),alloc(locsvq),lenbc,
-     2             intratx(level-1),intraty(level-1),intratz(level-1),
-     3             hx,hy,hz,naux,alloc(locaux),alloc(locx1d),delt,mptr)
+c           call qad(alloc(locnew),mitot,mjtot,mktot,nvar,
+c    1             alloc(locsvf),alloc(locsvq),lenbc,
+c    2             intratx(level-1),intraty(level-1),intratz(level-1),
+c    3             hx,hy,hz,naux,alloc(locaux),alloc(locx1d),delt,mptr)
          endif
 
 c        # See if the grid about to be advanced has gauge data to output.

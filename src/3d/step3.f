@@ -213,6 +213,35 @@ c
      &                 rpn3,rpt3,rptt3)
 c
             cflgrid = dmax1(cflgrid,cfl1d)
+
+         if ((mz .eq. 24) .and. (j.eq.1) .and. (k.eq.6)) then
+            write(outunit,*) 'x-sweep:  j=1, k=6, i=21,24 q1d = '
+            do i=21,24
+                write(outunit,777) i,(q1d(m,i), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddm = '
+            do i=21,24
+                write(outunit,777) i,(faddm(m,i), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddp = '
+            do i=21,24
+                write(outunit,777) i,(faddp(m,i), m=1,meqn)
+            enddo
+         endif
+         if ((mz .eq. 24) .and. (j.eq.8) .and. (k.eq.24)) then
+            write(outunit,*) 'x-sweep:  j=8, k=24, i=21,24 q1d = '
+            do i=21,24
+                write(outunit,777) i,(q1d(m,i), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddm = '
+            do i=21,24
+                write(outunit,777) i,(faddm(m,i), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddp = '
+            do i=21,24
+                write(outunit,777) i,(faddp(m,i), m=1,meqn)
+            enddo
+         endif
 c
 c        # update fluxes for use in AMR:
 c
@@ -321,6 +350,22 @@ c
      &                 rpn3,rpt3,rptt3)
 c
             cflgrid = dmax1(cflgrid,cfl1d)
+
+         if ((mz .eq. 24) .and. (i.eq.22) .and. (k.eq.6)) then
+            write(outunit,*) 'y-sweep:  i=22, k=6, j=-1,2, q1d = '
+            do j=-1,2
+                write(outunit,777) j,(q1d(m,j), m=1,meqn)
+ 777            format(i4,20e13.4)
+            enddo
+            write(outunit,*) 'faddm = '
+            do j=-1,2
+                write(outunit,777) j,(faddm(m,j), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddp = '
+            do j=-1,2
+                write(outunit,777) j,(faddp(m,j), m=1,meqn)
+            enddo
+         endif
 c
 c        # update fluxes for use in AMR:
 c
@@ -438,6 +483,20 @@ c
 c
             cflgrid = dmax1(cflgrid,cfl1d)
 c
+         if ((mz .eq. 24) .and. (i.eq.22) .and. (j.eq.8)) then
+            write(outunit,*) 'z-sweep:  i=22, j=8, k=23,26, q1d = '
+            do k=23,26
+                write(outunit,777) k,(q1d(m,k), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddm = '
+            do k=23,26
+                write(outunit,777) k,(faddm(m,k), m=1,meqn)
+            enddo
+            write(outunit,*) 'faddp = '
+            do k=23,26
+                write(outunit,777) k,(faddp(m,k), m=1,meqn)
+            enddo
+         endif
 c
 c        # update fluxes for use in AMR:
 c           # Note that the roles of the flux updates are changed.

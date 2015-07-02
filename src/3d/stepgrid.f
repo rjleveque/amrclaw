@@ -43,7 +43,7 @@ c#### common/comxyzt/dtcom,dxcom,dycom,dzcom,tcom,icom,jcom,kcom
       dimension work(mwork)
 
       logical    debug,  dump
-      data       debug/.false./,  dump/.false./
+      data       debug/.false./,  dump/.true./
 c
 c     # set tcom = time.  This is in the common block comxyt that could
 c     # be included in the Riemann solver, for example, if t is explicitly
@@ -54,15 +54,25 @@ c     # needed there.
 c
 !--        if (dump .and. mptr .ne. 1) 
 !--     1       call prettyprint(q,nvar,mitot,mjtot,mktot,outunit)
-      if (dump) then
+      if ((time.gt.48.8d0) .and. dump) then
          write(outunit,*)" grid ", mptr
-         do k = 1, mktot
-         do j = 1, mjtot
+         write(outunit,*)" time ", time
+         write(outunit,*)" mitot,mjtot,mktot ", mitot,mjtot,mktot
          do i = 1, mitot
-           write(outunit,545) i,j,k,(q(ivar,i,j,k),ivar=1,nvar)
- 545       format(3i3,3x,5e30.20)
-         end do
-         end do
+         x = xlow + (i-0.5d0)*dx
+c        if ((x.gt.0.189d0) .and. (x.lt.0.19d0)) then
+         if (((mptr.eq.1).and.(i.ge.8).and.(i.le.10)) 
+     &         .or. (i .eq. 24)) then
+             do k = 1, mktot
+             z = zlow + (k-0.5d0)*dz
+             do j = 1, mjtot
+             y = ylow + (j-0.5d0)*dy
+               write(outunit,545) i,j,k,(q(ivar,i,j,k),ivar=1,3),
+     &                  (q(ivar,i,j,k),ivar=4,9)
+ 545           format(3i3,20e12.4)
+             end do
+             end do
+            endif
          end do
       endif
 c
@@ -221,7 +231,7 @@ c
 
 !--        if (dump .and. mptr .ne. 1) 
 !--     1     call prettyprint(q,nvar,mitot,mjtot,mktot,outunit)
-      if (dump) then
+      if (.false.) then
          write(outunit,*)" after time step on grid ", mptr
          do k = 1, mktot
          do j = 1, mjtot
