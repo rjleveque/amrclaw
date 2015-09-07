@@ -68,7 +68,8 @@ contains
         integer :: lst, lend, naux, nvar
         real (kind=8) :: time
         
-        character*15 :: fname1, fname2
+        character*10 :: fname1, fname2
+        character*9 :: dirname
         real (kind=8) :: val(nvar)
         real (kind=8) :: alpha, xlow, xup, ylow, yup, zlow, zup, zkm, zkp
         
@@ -90,8 +91,8 @@ contains
         
                 
 !     ###  make the file names and open output files
-        fname1 = 'slice_xyx.qxxxx'
-        fname2 = 'slice_xyx.txxxx'
+        fname1 = 'fort.qxxxx'
+        fname2 = 'fort.txxxx'
 !        fname3 = 'fort.axxxx'
 !        fname4 = 'fort.bxxxx'
         matunit1 = 50
@@ -100,7 +101,7 @@ contains
  !       matunit4 = 71
         
         nstp     = matlabu
-        do ipos = 15, 12, -1
+        do ipos = 10, 7, -1
             idigit = mod(nstp,10)
             fname1(ipos:ipos) = char(ichar('0') + idigit)
             fname2(ipos:ipos) = char(ichar('0') + idigit)
@@ -109,9 +110,13 @@ contains
             nstp = nstp / 10
         end do
         
+        dirname = 'slice_xy0'
         do i = 1,num_slices_xy
-            fname1(9:9) = char(ichar('0') + i)
-            open(unit=matunit1+i,file=fname1,status='unknown',form='formatted')
+!           open(unit=matunit1+i,file=fname1,status='unknown',form='formatted')
+            dirname(9:9) = char(ichar('0') + i)
+            call system('mkdir -p '//dirname)
+            open(unit=matunit1+i,file=dirname//'/'//fname1, &
+                 status='unknown',form='formatted')
             
             ngrids(i) = 0
         end do
@@ -223,8 +228,9 @@ contains
 
 
         do i = 1,num_slices_xy
-            fname2(9:9) = char(ichar('0') + i)
-            open(unit=matunit2+i,file=fname2,status='unknown',form='formatted')
+            dirname(9:9) = char(ichar('0') + i)
+            open(unit=matunit2+i,file=dirname//'/'//fname2, &
+                 status='unknown',form='formatted')
             ndim = 3
         !     # NOTE: we need to print out nghost too in order to strip
         !     #       ghost cells from q when reading in pyclaw.io.binary
@@ -255,7 +261,8 @@ contains
         integer :: lst, lend, naux, nvar
         real (kind=8) :: time
         
-        character*15 :: fname1, fname2, fname3, fname4
+        character*10 :: fname1, fname2, fname3, fname4
+        character*9 :: dirname
         real (kind=8) :: val(nvar)
         real (kind=8) :: alpha, xlow, xup, ylow, yup, zlow, zup, yjm, yjp
         
@@ -277,8 +284,8 @@ contains
         
 
 !     ###  make the file names and open output files
-        fname1 = 'slice_xzx.qxxxx'
-        fname2 = 'slice_xzx.txxxx'
+        fname1 = 'fort.qxxxx'
+        fname2 = 'fort.txxxx'
 !        fname3 = 'fort.axxxx'
 !        fname4 = 'fort.bxxxx'
         matunit1 = 50
@@ -287,7 +294,7 @@ contains
  !       matunit4 = 71
         
         nstp     = matlabu
-        do ipos = 15, 12, -1
+        do ipos = 10, 7, -1
             idigit = mod(nstp,10)
             fname1(ipos:ipos) = char(ichar('0') + idigit)
             fname2(ipos:ipos) = char(ichar('0') + idigit)
@@ -296,9 +303,12 @@ contains
             nstp = nstp / 10
         end do
         
+        dirname = 'slice_xz0'
         do i = 1,num_slices_xz
-            fname1(9:9) = char(ichar('0') + i)
-            open(unit=matunit1+i,file=fname1,status='unknown',form='formatted')
+            dirname(9:9) = char(ichar('0') + i)
+            call system('mkdir -p '//dirname)
+            open(unit=matunit1+i,file=dirname//'/'//fname1, &
+                 status='unknown',form='formatted')
 
             ngrids(i) = 0
         end do
@@ -411,8 +421,9 @@ contains
     ! --------------
 
         do i = 1,num_slices_xz
-            fname2(9:9) = char(ichar('0') + i)
-            open(unit=matunit2+i,file=fname2,status='unknown',form='formatted')
+            dirname(9:9) = char(ichar('0') + i)
+            open(unit=matunit2+i,file=dirname//'/'//fname2, &
+                 status='unknown',form='formatted')
             ndim = 3
         !     # NOTE: we need to print out nghost too in order to strip
         !     #       ghost cells from q when reading in pyclaw.io.binary
@@ -444,7 +455,8 @@ contains
         integer :: lst, lend, naux, nvar
         real (kind=8) :: time
         
-        character*15 :: fname1, fname2, fname3, fname4
+        character*10 :: fname1, fname2, fname3, fname4
+        character*9 :: dirname
         real (kind=8) :: val(nvar)
         real (kind=8) :: alpha, xlow, xup, ylow, yup, zlow, zup, xim, xip
         
@@ -466,8 +478,8 @@ contains
         
 
 !     ###  make the file names and open output files
-        fname1 = 'slice_yzx.qxxxx'
-        fname2 = 'slice_yzx.txxxx'
+        fname1 = 'fort.qxxxx'
+        fname2 = 'fort.txxxx'
 !        fname3 = 'fort.axxxx'
 !        fname4 = 'fort.bxxxx'
         matunit1 = 50
@@ -476,7 +488,7 @@ contains
  !       matunit4 = 71
         
         nstp     = matlabu
-        do ipos = 15, 12, -1
+        do ipos = 10, 7, -1
             idigit = mod(nstp,10)
             fname1(ipos:ipos) = char(ichar('0') + idigit)
             fname2(ipos:ipos) = char(ichar('0') + idigit)
@@ -485,10 +497,12 @@ contains
             nstp = nstp / 10
         end do
         
+        dirname = 'slice_yz0'
         do i = 1,num_slices_yz
-            fname1(9:9) = char(ichar('0') + i)
-            open(unit=matunit1+i,file=fname1,status='unknown',form='formatted')
-    
+            dirname(9:9) = char(ichar('0') + i)
+            call system('mkdir -p '//dirname)
+            open(unit=matunit1+i,file=dirname//'/'//fname1, &
+                 status='unknown',form='formatted')
             ngrids(i) = 0
         end do
 
@@ -598,8 +612,9 @@ contains
     ! --------------
 
         do i = 1,num_slices_yz
-            fname2(9:9) = char(ichar('0') + i)
-            open(unit=matunit2+i,file=fname2,status='unknown',form='formatted')
+            dirname(9:9) = char(ichar('0') + i)
+            open(unit=matunit2+i,file=dirname//'/'//fname2, &
+                 status='unknown',form='formatted')
             ndim = 3
         !     # NOTE: we need to print out nghost too in order to strip
         !     #       ghost cells from q when reading in pyclaw.io.binary
