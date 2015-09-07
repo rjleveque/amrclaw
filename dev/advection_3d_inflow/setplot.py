@@ -19,22 +19,50 @@ def setplot(plotdata):
 
 
     from clawpack.visclaw import colormaps
+    import os
 
     plotdata.clearfigures() # clear any old figures,axes,items data
 
     
     # Figure for pcolor plot
-    plotfigure = plotdata.new_plotfigure(name='pcolor', figno=0)
+    plotfigure = plotdata.new_plotfigure(name='pcolor xz', figno=0)
+    plotfigure.kwargs = {'figsize':(15,6)}
+
+    # first xz plot:
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
+    plotaxes.axescmd = 'subplot(121)'
     plotaxes.xlimits = [0,1]
     plotaxes.ylimits = [0,1]
-    plotaxes.title = 'Solution'
+    plotaxes.title = 'slice_xz1'
     plotaxes.scaled = True
 
     # Set up for item on these axes:
     plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.outdir = os.path.join(plotdata.outdir, 'slice_xz1')
+    plotitem.plot_var = 0
+    plotitem.pcolor_cmap = colormaps.yellow_red_blue
+    plotitem.pcolor_cmin = 0.1
+    plotitem.pcolor_cmax = 1.
+    plotitem.add_colorbar = True
+
+    plotitem.amr_celledges_show = [0]  
+    plotitem.amr_patchedges_show = [1]
+
+    # second xz plot:
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes()
+    plotaxes.axescmd = 'subplot(122)'
+    plotaxes.xlimits = [0,1]
+    plotaxes.ylimits = [0,1]
+    plotaxes.title = 'slice_xz2'
+    plotaxes.scaled = True
+
+    # Set up for item on these axes:
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.outdir = os.path.join(plotdata.outdir, 'slice_xz2')
     plotitem.plot_var = 0
     plotitem.pcolor_cmap = colormaps.yellow_red_blue
     plotitem.pcolor_cmin = 0.1
@@ -45,50 +73,13 @@ def setplot(plotdata):
     plotitem.amr_patchedges_show = [1]
 
 
-    # Figure for contour plot
-    plotfigure = plotdata.new_plotfigure(name='contour', figno=1)
-
-    # Set up for axes in this figure:
-    plotaxes = plotfigure.new_plotaxes()
-    plotaxes.xlimits = [0,1]
-    plotaxes.ylimits = [0,1]
-    plotaxes.title = 'Solution'
-    plotaxes.scaled = True
-    plotaxes.afteraxes = addgauges
-
-    # Set up for item on these axes:
-    plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
-    plotitem.plot_var = 0
-    plotitem.contour_nlevels = 20
-    plotitem.contour_min = 0.01
-    plotitem.contour_max = 0.99
-    plotitem.amr_contour_colors = ['r','g','b']  # color on each level
-    plotitem.amr_patch_bgcolor = ['#ffeeee', '#eeeeff', '#eeffee']
-    plotitem.celledges_show = 0
-    plotitem.patchedges_show = 0
-
-
-    # Figure for grid cells
-    plotfigure = plotdata.new_plotfigure(name='cells', figno=2)
-
-    # Set up for axes in this figure:
-    plotaxes = plotfigure.new_plotaxes()
-    plotaxes.xlimits = [0,1]
-    plotaxes.ylimits = [0,1]
-    plotaxes.title = 'Grid patches'
-    plotaxes.scaled = True
-
-    # Set up for item on these axes:
-    plotitem = plotaxes.new_plotitem(plot_type='2d_patch')
-    plotitem.amr_patch_bgcolor = ['#ffeeee', '#eeeeff', '#eeffee']
-    plotitem.amr_celledges_show = [1,1,0]
-    plotitem.amr_patchedges_show = [1]
 
     #-----------------------------------------
     # Figures for gauges
     #-----------------------------------------
     plotfigure = plotdata.new_plotfigure(name='q', figno=300, \
                     type='each_gauge')
+    #plotfigure.show = False
     plotfigure.clf_each_gauge = True
 
     # Set up for axes in this figure:
@@ -120,12 +111,3 @@ def setplot(plotdata):
 
     return plotdata
 
-    
-    
-# To plot gauge locations on pcolor or contour plot, use this as
-# an afteraxis function:
-
-def addgauges(current_data):
-    from clawpack.visclaw import gaugetools
-    gaugetools.plot_gauge_locations(current_data.plotdata, \
-         gaugenos='all', format_string='ko', add_labels=True)

@@ -117,8 +117,7 @@ def setrun(claw_pkg='amrclaw'):
     # the OUTDIR indicated in Makefile.
 
     clawdata.restart = False               # True to restart from prior results
-    #clawdata.restart_file = 'fort.chk00006'  # File to use for restart data
-    clawdata.restart_file = 'fort.chk00741'
+    clawdata.restart_file = 'fort.chk00006'  # File to use for restart data
 
 
     # -------------
@@ -133,8 +132,8 @@ def setrun(claw_pkg='amrclaw'):
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
         # Can specify num_output_times = 0 for no output
-        clawdata.num_output_times = 1
-        clawdata.tfinal = 0.5
+        clawdata.num_output_times = 3
+        clawdata.tfinal = 0.75
         clawdata.output_t0 = True  # output at initial (or restart) time?
 
     elif clawdata.output_style == 2:
@@ -262,6 +261,14 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.bc_lower[inflow_index] = 'user'  # at inflow_side
 
 
+
+    # ---------------
+    # Gauges:
+    # ---------------
+    gauges = rundata.gaugedata.gauges
+    # for gauges append lines of the form  [gaugeno, x, y, z, t1, t2]
+    gauges.append([1, 0.1, 0.5, 0.5, 0., 1e9])
+
     # --------------
     # Checkpointing:
     # --------------
@@ -346,15 +353,15 @@ def setrun(claw_pkg='amrclaw'):
 
     #  ----- For developers -----
     # Toggle debugging print statements:
-    amrdata.dprint = True       # print domain flags
-    amrdata.eprint = True       # print err est flags
+    amrdata.dprint = False      # print domain flags
+    amrdata.eprint = False      # print err est flags
     amrdata.edebug = False      # even more err est flags
-    amrdata.gprint = True       # grid bisection/clustering
-    amrdata.nprint = True       # proper nesting output
-    amrdata.pprint = True       # proj. of tagged points
-    amrdata.rprint = True       # print regridding summary
+    amrdata.gprint = False      # grid bisection/clustering
+    amrdata.nprint = False      # proper nesting output
+    amrdata.pprint = False      # proj. of tagged points
+    amrdata.rprint = False      # print regridding summary
     amrdata.sprint = False      # space/memory output
-    amrdata.tprint = True       # time step reporting each level
+    amrdata.tprint = False      # time step reporting each level
     amrdata.uprint = False      # update/upbnd reporting
 
 
