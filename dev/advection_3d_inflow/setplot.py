@@ -18,60 +18,29 @@ def setplot(plotdata):
     """ 
 
 
-    from clawpack.visclaw import colormaps
+    from clawpack.clawutil.data import ClawData
     import os
+    import glob
 
     plotdata.clearfigures() # clear any old figures,axes,items data
 
+
+    slice_dirs = glob.glob(plotdata.outdir + '/slice_*')
+    print "Found slice directories: ", slice_dirs
     
-    # Figure for pcolor plot
-    plotfigure = plotdata.new_plotfigure(name='pcolor xz', figno=0)
-    plotfigure.kwargs = {'figsize':(15,6)}
+    slice_data = ClawData()
+    slice_data.read(plotdata.outdir + '/slices.data', force=True)
 
-    # first xz plot:
+    # make a figure for each slice found, using the function defined below:
 
-    # Set up for axes in this figure:
-    plotaxes = plotfigure.new_plotaxes()
-    plotaxes.axescmd = 'subplot(121)'
-    plotaxes.xlimits = [0,1]
-    plotaxes.ylimits = [0,1]
-    plotaxes.title = 'slice_xz1'
-    plotaxes.scaled = True
-
-    # Set up for item on these axes:
-    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
-    plotitem.outdir = os.path.join(plotdata.outdir, 'slice_xz1')
-    plotitem.plot_var = 0
-    plotitem.pcolor_cmap = colormaps.yellow_red_blue
-    plotitem.pcolor_cmin = 0.1
-    plotitem.pcolor_cmax = 1.
-    plotitem.add_colorbar = True
-
-    plotitem.amr_celledges_show = [0]  
-    plotitem.amr_patchedges_show = [1]
-
-    # second xz plot:
-
-    # Set up for axes in this figure:
-    plotaxes = plotfigure.new_plotaxes()
-    plotaxes.axescmd = 'subplot(122)'
-    plotaxes.xlimits = [0,1]
-    plotaxes.ylimits = [0,1]
-    plotaxes.title = 'slice_xz2'
-    plotaxes.scaled = True
-
-    # Set up for item on these axes:
-    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
-    plotitem.outdir = os.path.join(plotdata.outdir, 'slice_xz2')
-    plotitem.plot_var = 0
-    plotitem.pcolor_cmap = colormaps.yellow_red_blue
-    plotitem.pcolor_cmin = 0.1
-    plotitem.pcolor_cmax = 1.
-    plotitem.add_colorbar = True
-
-    plotitem.amr_celledges_show = [0]  
-    plotitem.amr_patchedges_show = [1]
-
+    for k,v in slice_data.iteritems():
+        if k[0]=='z':
+            make_plot_figure('xy',k,v,plotdata)
+        elif k[0]=='y':
+            make_plot_figure('xz',k,v,plotdata)
+        elif k[0]=='x':
+            make_plot_figure('yz',k,v,plotdata)
+        
 
 
     #-----------------------------------------
@@ -110,4 +79,34 @@ def setplot(plotdata):
     plotdata.latex_makepdf = False           # also run pdflatex?
 
     return plotdata
+
+
+def make_plot_figure(plane, k, v, plotdata):
+
+    from clawpack.visclaw import colormaps
+
+    title = '%s plane, %s = %s' % (plane,k,v)
+    outdir = os.path.join(plotdata.outdir, 'slice_%s%s' % (plane,k[1]))
+
+    # Figure for pcolor plot
+    plotfigure = plotdata.new_plotfigure(name=title)
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes()
+    plotaxes.xlimits = [0,1]
+    plotaxes.ylimits = [0,1]
+    plotaxes.title = title
+    plotaxes.scaled = True
+
+    # Set up for item on these axes:
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.outdir = outdir
+    plotitem.plot_var = 0
+    plotitem.pcolor_cmap = colormaps.yellow_red_blue
+    plotitem.pcolor_cmin = 0.1
+    plotitem.pcolor_cmax = 1.
+    plotitem.add_colorbar = True
+
+    plotitem.amr_celledges_show = [0]  
+    plotitem.amr_patchedges_show = [1]
 
