@@ -281,15 +281,21 @@ class SliceData(clawpack.clawutil.data.ClawData):
 
         # Write out slice data file
         self.open_data_file(out_file,data_source)
+
         self.data_write(name='nslices_xy',value=len(self.slices_xy))
+        for k,slice in enumerate(self.slices_xy):
+            self.data_write(name='z%s' % (k+1),value=slice)
+        self.data_write()  # writes blank line
+
         self.data_write(name='nslices_xz',value=len(self.slices_xz))
+        for k,slice in enumerate(self.slices_xz):
+            self.data_write(name='y%s' % (k+1),value=slice)
+        self.data_write()  # writes blank line
+
         self.data_write(name='nslices_yz',value=len(self.slices_yz))
-        for slice in self.slices_xy:
-            self.data_write(name='z',value=slice)
-        for slice in self.slices_xz:
-            self.data_write(name='y',value=slice)
-        for slice in self.slices_yz:
-            self.data_write(name='x',value=slice)
+        for k,slice in enumerate(self.slices_yz):
+            self.data_write(name='x%s' % (k+1),value=slice)
+
         self.close_data_file()
 
     def read(self,data_path="./",file_name='slices.data'):
