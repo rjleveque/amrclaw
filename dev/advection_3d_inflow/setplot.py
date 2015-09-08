@@ -85,7 +85,7 @@ def make_plot_figure(plane, k, v, plotdata):
 
     from clawpack.visclaw import colormaps
 
-    title = '%s plane, %s = %s' % (plane,k,v)
+    title = '%s slice (%s = %s)' % (plane,k[0],v)
     outdir = os.path.join(plotdata.outdir, 'slice_%s%s' % (plane,k[1]))
 
     # Figure for pcolor plot

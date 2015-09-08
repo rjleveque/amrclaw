@@ -346,9 +346,9 @@ def setrun(claw_pkg='amrclaw'):
     # --------------------------
 
     # Note that the output will only contain slices if any are specified
-    rundata.slicedata.slices_xy = [0.45, 0.55] # list of z positions
-    rundata.slicedata.slices_xz = [0.45, 0.55] # list of y positions
-    rundata.slicedata.slices_yz = [0.0, 0.1] # list of x positions
+    rundata.slicedata.slices_xy = [0.4, 0.6] # list of z positions
+    rundata.slicedata.slices_xz = [0.5] # list of y positions
+    rundata.slicedata.slices_yz = [0.1] # list of x positions
 
 
     #  ----- For developers -----
