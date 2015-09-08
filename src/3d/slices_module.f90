@@ -33,27 +33,27 @@ contains
         endif
         
         read(iunit,*) num_slices_xy
-        read(iunit,*) num_slices_xz
-        read(iunit,*) num_slices_yz
-
-        num_slices = num_slices_xy + num_slices_xz + num_slices_yz
-        
-        allocate(slices_xy(num_slices_xy), slices_xz(num_slices_xz), slices_yz(num_slices_yz))
-        
+        allocate(slices_xy(num_slices_xy))
         ! Read in xy-slice position in order
         do i=1,num_slices_xy
             read(iunit,*) slices_xy(i)
         end do
-        
+
+        read(iunit,*) num_slices_xz
+        allocate(slices_xz(num_slices_xz))
         ! Read in xz-slice position in order
         do i=1,num_slices_xz
             read(iunit,*) slices_xz(i)
         end do
-        
+
+        read(iunit,*) num_slices_yz
+        allocate(slices_yz(num_slices_yz))
         ! Read in yz-slice position in order
         do i=1,num_slices_yz
             read(iunit,*) slices_yz(i)
         end do
+
+        num_slices = num_slices_xy + num_slices_xz + num_slices_yz
         
         close(iunit)
         
