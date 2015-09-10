@@ -6,6 +6,10 @@ This module is imported by the plotting routines and then the
 function setplot is called to set the plot parameters.
 """
 
+import os
+
+outdir = os.path.abspath('_output')
+
 #--------------------------
 def setplot(plotdata):
 #--------------------------
@@ -24,12 +28,14 @@ def setplot(plotdata):
 
     plotdata.clearfigures() # clear any old figures,axes,items data
 
+    print "plotdata.outdir = ",plotdata.outdir
 
-    slice_dirs = glob.glob(plotdata.outdir + '/slice_*')
+    slice_dirs = glob.glob(outdir + '/slice_*')
     print "Found slice directories: ", slice_dirs
-    
+
     slice_data = ClawData()
-    slice_data.read(plotdata.outdir + '/slices.data', force=True)
+    slice_data.read(outdir + '/slices.data', force=True)
+
 
     # make a figure for each slice found, using the function defined below:
 
@@ -83,6 +89,7 @@ def setplot(plotdata):
 
 def make_plot_figure(plane, k, v, plotdata):
 
+    import os
     from clawpack.visclaw import colormaps
 
     title = '%s slice (%s = %s)' % (plane,k[0],v)
