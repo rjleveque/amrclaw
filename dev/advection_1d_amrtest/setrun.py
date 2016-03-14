@@ -228,8 +228,8 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.bc_lower[0] = 'periodic'   # at xlower
     clawdata.bc_upper[0] = 'periodic'   # at xupper
 
-    clawdata.bc_lower[1] = 'periodic'   # at ylower
-    clawdata.bc_upper[1] = 'periodic'   # at yupper
+    clawdata.bc_lower[1] = 'user'   # at ylower
+    clawdata.bc_upper[1] = 'user'   # at yupper
                          
 
     # ---------------
