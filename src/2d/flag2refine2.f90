@@ -87,7 +87,11 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
             ! -----------------------------------------------------------------
                 dq = 0.d0
                 dqi = abs(q(:,i+1,j) - q(:,i-1,j))
-                dqj = abs(q(:,i,j+1) - q(:,i,j-1))
+                if (my > 1) then
+                    dqj = abs(q(:,i,j+1) - q(:,i,j-1))
+                  else
+                    dqj = 0.d0  ! for 1d AMR
+                  endif
                 dq = max(dq,dqi,dqj)
 
                 ! default checks all components of undivided difference:
