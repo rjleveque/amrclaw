@@ -78,6 +78,7 @@ subroutine step2(maxm,meqn,maux,mbc,mx,my,qold,aux,dx,dy,dt,cflgrid,fm,fp,gm,gp,
     ! ============================================================================
     ! Perform X-Sweeps
     do j = 0,my+1
+        if (my.eq.1 .and. j.ne.1)  cycle  !# only one row for 1d AMR
         ! Copy old q into 1d slice
         q1d(:,1-mbc:mx+mbc) = qold(:,1-mbc:mx+mbc,j)
         
@@ -118,44 +119,48 @@ subroutine step2(maxm,meqn,maux,mbc,mx,my,qold,aux,dx,dy,dt,cflgrid,fm,fp,gm,gp,
     ! ============================================================================
     !  y-sweeps    
     !
-    do i = 0,mx+1
-        
-        ! Copy data along a slice into 1d arrays:
-        q1d(:,1-mbc:my+mbc) = qold(:,i,1-mbc:my+mbc)
 
-        ! Set dt/dy ratio in slice
-        if (mcapa > 0) then
-            dtdy1d(1-mbc:my+mbc) = dtdy / aux(mcapa,i,1-mbc:my+mbc)
-        else
-            dtdy1d = dtdy
-        endif
+    if (my > 1) then   ! skip y-sweeps if doing 1d AMR
 
-        ! Copy aux slices
-        if (maux .gt. 0)  then
-            aux1(:,1-mbc:my+mbc) = aux(:,i-1,1-mbc:my+mbc)
-            aux2(:,1-mbc:my+mbc) = aux(:,i,1-mbc:my+mbc)
-            aux3(:,1-mbc:my+mbc) = aux(:,i+1,1-mbc:my+mbc)
-        endif
-        
-        ! Store the value of i along this slice in the common block
-        icom = i
-        
-        ! Compute modifications fadd and gadd to fluxes along this slice
-        call flux2(2,maxm,meqn,maux,mbc,my,q1d,dtdy1d,aux1,aux2,aux3, &
-                   faddm,faddp,gaddm,gaddp,cfl1d,wave,s,amdq,apdq,cqxx, &
-                   bmadq,bpadq,rpn2,rpt2)
+        do i = 0,mx+1
+            
+            ! Copy data along a slice into 1d arrays:
+            q1d(:,1-mbc:my+mbc) = qold(:,i,1-mbc:my+mbc)
 
-        cflgrid = max(cflgrid,cfl1d)
+            ! Set dt/dy ratio in slice
+            if (mcapa > 0) then
+                dtdy1d(1-mbc:my+mbc) = dtdy / aux(mcapa,i,1-mbc:my+mbc)
+            else
+                dtdy1d = dtdy
+            endif
 
-        ! Update fluxes
-        gm(:,i,1:my+1) = gm(:,i,1:my+1) + faddm(:,1:my+1)
-        gp(:,i,1:my+1) = gp(:,i,1:my+1) + faddp(:,1:my+1)
-        fm(:,i,1:my+1) = fm(:,i,1:my+1) + gaddm(:,1:my+1,1)
-        fp(:,i,1:my+1) = fp(:,i,1:my+1) + gaddp(:,1:my+1,1)
-        fm(:,i+1,1:my+1) = fm(:,i+1,1:my+1) + gaddm(:,1:my+1,2)
-        fp(:,i+1,1:my+1) = fp(:,i+1,1:my+1) + gaddp(:,1:my+1,2)
+            ! Copy aux slices
+            if (maux .gt. 0)  then
+                aux1(:,1-mbc:my+mbc) = aux(:,i-1,1-mbc:my+mbc)
+                aux2(:,1-mbc:my+mbc) = aux(:,i,1-mbc:my+mbc)
+                aux3(:,1-mbc:my+mbc) = aux(:,i+1,1-mbc:my+mbc)
+            endif
+            
+            ! Store the value of i along this slice in the common block
+            icom = i
+            
+            ! Compute modifications fadd and gadd to fluxes along this slice
+            call flux2(2,maxm,meqn,maux,mbc,my,q1d,dtdy1d,aux1,aux2,aux3, &
+                       faddm,faddp,gaddm,gaddp,cfl1d,wave,s,amdq,apdq,cqxx, &
+                       bmadq,bpadq,rpn2,rpt2)
 
-    enddo
+            cflgrid = max(cflgrid,cfl1d)
 
+            ! Update fluxes
+            gm(:,i,1:my+1) = gm(:,i,1:my+1) + faddm(:,1:my+1)
+            gp(:,i,1:my+1) = gp(:,i,1:my+1) + faddp(:,1:my+1)
+            fm(:,i,1:my+1) = fm(:,i,1:my+1) + gaddm(:,1:my+1,1)
+            fp(:,i,1:my+1) = fp(:,i,1:my+1) + gaddp(:,1:my+1,1)
+            fm(:,i+1,1:my+1) = fm(:,i+1,1:my+1) + gaddm(:,1:my+1,2)
+            fp(:,i+1,1:my+1) = fp(:,i+1,1:my+1) + gaddp(:,1:my+1,2)
+
+        enddo
+
+    endif
 
 end subroutine step2
